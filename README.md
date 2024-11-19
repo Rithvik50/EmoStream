@@ -9,9 +9,8 @@ A concurrent emoji broadcast system built using Kafka, Flask, and Spark in an ev
 ├── app.py
 ├── emoji_consumer.py
 ├── emoji_producer.py
-├── publishers/
-│   ├── cluster_pub.py
-│   └── main_pub.py
+├── cluster_pub.py
+├── main_pub.py
 ├── requirements.txt
 ├── spark.py
 ├── sub.py
@@ -23,10 +22,10 @@ A concurrent emoji broadcast system built using Kafka, Flask, and Spark in an ev
 - **`app.py`**: Main Flask application with Kafka producer and consumer functionalities
 - **`app2.py`**: Secondary Flask application with a Kafka producer
 - **`appo.py`**: Another Flask application featuring a Kafka consumer
-- **`consumer/emoji_consumer.py`**: Kafka consumer script for receiving emoji messages
-- **`producer/emoji_producer.py`**: Kafka producer script to send emoji messages
-- **`publishers/cluster_pub.py`**: Kafka consumer and producer script for forwarding messages to cluster topics
-- **`publishers/main_pub.py`**: Kafka consumer for listening to aggregated emoji messages
+- **`emoji_consumer.py`**: Kafka consumer script for receiving emoji messages
+- **`emoji_producer.py`**: Kafka producer script to send emoji messages
+- **`cluster_pub.py`**: Kafka consumer and producer script for forwarding messages to cluster topics
+- **`main_pub.py`**: Kafka consumer for listening to aggregated emoji messages
 - **`requirements.txt`**: List of required Python dependencies
 - **`spark.py`**: Spark job for processing and aggregating emoji data from Kafka
 - **`sub.py`**: Kafka consumer for listening to multiple cluster topics
@@ -61,7 +60,7 @@ A concurrent emoji broadcast system built using Kafka, Flask, and Spark in an ev
 
 4. Run Kafka Producer:
    ```bash
-   python producer/emoji_producer.py
+   python emoji_producer.py
    ```
 
 5. Run Spark Job:
