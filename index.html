@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Real-time Emoji Feed & Send Emoji</title>
+    <script src="https://cdn.socket.io/4.5.4/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f4f4f9;
+        }
+        .container {
+            width: 80%;
+            max-width: 800px;
+            padding: 20px;
+            border-radius: 8px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .emoji-feed {
+            padding: 10px;
+            background-color: #f9f9f9;
+            height: 50vh;
+            overflow-y: auto;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .emoji-entry {
+            font-size: 30px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .emoji {
+            margin-right: 10px;
+            font-size: 50px;
+        }
+        .count {
+            font-size: 20px;
+            color: gray;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const socket = io.connect();
+
+            // Listen for new emoji events from the server
+            socket.on("new_emoji", (data) => {
+                const emojiFeed = document.getElementById("emoji-feed");
+
+                // Create a new div for the emoji and count
+                const newEmojiEntry = document.createElement("div");
+                newEmojiEntry.className = "emoji-entry";
+
+                // Create elements for the emoji and its count
+                const emojiElement = document.createElement("div");
+                emojiElement.className = "emoji";
+                emojiElement.textContent = data.emoji;  // Display the emoji
+
+                const countElement = document.createElement("div");
+                countElement.className = "count";
+                countElement.textContent = `Count: ${data.scaled_count}`;  // Display the scaled count
+
+                // Append the emoji and count to the new entry
+                newEmojiEntry.appendChild(emojiElement);
+                newEmojiEntry.appendChild(countElement);
+
+                // Add the new entry to the top of the emoji feed
+                emojiFeed.prepend(newEmojiEntry);
+            });
+        });
+
+        async function sendEmoji() {
+            // Get form values
+            const userId = document.getElementById("user_id").value;
+            const emojiType = document.getElementById("emoji_type").value;
+
+            // Prepare data
+            const data = {
+                user_id: parseInt(userId), // Ensure user_id is sent as an integer
+                emoji_type: emojiType
+            };
+
+            try {
+                // Send POST request to the Flask API
+                const response = await fetch("/send-emoji", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+                if (response.ok) {
+                    alert("Emoji sent successfully! Response: " + JSON.stringify(result));
+                } else {
+                    alert("Error: " + JSON.stringify(result));
+                }
+            } catch (error) {
+                console.error("Error sending emoji:", error);
+                alert("Failed to send emoji. Check console for details.");
+            }
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1>Send Emoji to Kafka</h1>
+        <form onsubmit="event.preventDefault(); sendEmoji();">
+            <label for="user_id">User ID:</label>
+            <input type="number" id="user_id" name="user_id" required><br><br>
+
+            <label for="emoji_type">Emoji Type:</label>
+            <select id="emoji_type" name="emoji_type" required>
+                <option value="😀">😀</option>
+                <option value="😢">😢</option>
+                <option value="🔥">🔥</option>
+                <option value="💯">💯</option>
+            </select><br><br>
+
+            <button type="submit">Send Emoji</button>
+        </form>
+    </div>
+
+    <div class="container">
+        <h1>Real-time Emoji Feed</h1>
+        <div id="emoji-feed" class="emoji-feed">
+            <!-- Real-time emojis will be added here -->
+        </div>
+    </div>
+</body>
+</html>
