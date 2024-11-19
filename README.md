@@ -7,22 +7,15 @@ A concurrent emoji broadcast system built using Kafka, Flask, and Spark in an ev
 ```plaintext
 .
 ├── app.py
-├── app2.py
-├── appo.py
-├── consumer/
-│   └── emoji_consumer.py
-├── producer/
-│   └── emoji_producer.py
+├── emoji_consumer.py
+├── emoji_producer.py
 ├── publishers/
 │   ├── cluster_pub.py
 │   └── main_pub.py
 ├── requirements.txt
 ├── spark.py
 ├── sub.py
-└── templates/
-    ├── index.html
-    ├── index2.html
-    └── indexo.html
+└── index.html
 ```
 
 ## Files Overview
