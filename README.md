@@ -1,6 +1,6 @@
 # Emoji Stream
 
-A concurrent emoji broadcast system built using Kafka, Flask, and Spark in an event-driven architecture. This project enables real-time emoji broadcasting, processing, and aggregation.
+This is a concurrent emoji broadcast system built using Kafka, Flask, and Spark in an event-driven architecture. This project enables real-time emoji broadcasting, processing, and aggregation.
 
 ## Project Structure
 
